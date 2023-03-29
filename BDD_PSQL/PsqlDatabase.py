@@ -66,6 +66,7 @@ class PsqlDatabase(Database.Database):
 
             res = [{column_name: row[column_name] for column_name in row} for row in query_result]
         except Exception as e:
+            print("error")
             print(e.__dict__)
             raise e
 

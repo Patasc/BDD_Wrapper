@@ -2,8 +2,6 @@ from Database import Database
 
 from BDD_PSQL.PsqlDatabase import PsqlDatabase
 
-from Utils.Erreurs.BDD import BDDNonPriseEnCharge
-
 handlers = {"psql": PsqlDatabase}
 
 
@@ -15,6 +13,6 @@ def initiate(systeme: str) -> Database:
     :return:
     """
     if systeme.lower() not in handlers.keys():
-        raise BDDNonPriseEnCharge
+        raise ValueError("Paramètre non reconnu")
 
     return handlers.get(systeme.lower())()

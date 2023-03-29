@@ -1,5 +1,10 @@
 from Link import Link
 from ManyToMany import ManyToMany
+import datetime
+
+
+def getTime():
+    return datetime.datetime.now().astimezone()
 
 
 class Table:
@@ -15,6 +20,10 @@ class Table:
         servant à remplir le schéma d'information
         """
         self.model_class = model
+
+        for key in self.__annotations__:
+            if self.__dict__.get(key) is not None:
+                self.__dict__[key] = None
 
         if self.table_name is None:
             # Si le nom de la table est précisé il est pris, sinon il s'agit du nom de la classe en minuscule
@@ -137,4 +146,15 @@ class Table:
                     setattr(self, key, query_res)
 
         return self
+
+    def select(self, selected: list[str]):
+        args = {}
+
+        for requested in selected:
+            if requested in self.__annotations__ and self.__dict__.get(requested) is not None:
+                args[requested] = self.__dict__.get(requested)
+
+        print(f"Args : {args}")
+
+        return type(self)(self.model_class, **args)
 
